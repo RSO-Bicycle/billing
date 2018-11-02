@@ -1,12 +1,8 @@
-package si.rso.bicycle.entities;
-
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
+package si.rso.bicycle.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -37,11 +33,6 @@ public class UserEntity extends BaseEntity {
     @NotEmpty
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
-
-    // Connections
-    @LazyToOne(value = LazyToOneOption.PROXY)
-    @OneToMany(mappedBy = "user")
-    private List<ProfileEntity> profileEntities;
 
     // @generated
     public String getUsername() {

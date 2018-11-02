@@ -1,4 +1,4 @@
-package si.rso.bicycle.entities;
+package si.rso.bicycle.entity;
 
 import org.hibernate.annotations.Type;
 

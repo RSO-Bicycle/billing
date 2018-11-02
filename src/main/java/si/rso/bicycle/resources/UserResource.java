@@ -4,8 +4,9 @@ import com.kumuluz.ee.streaming.common.annotations.StreamProducer;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
-import org.hibernate.validator.constraints.Length;
-import si.rso.bicycle.entities.UserEntity;
+import org.codehaus.jackson.map.util.ISO8601Utils;
+import si.rso.bicycle.entity.UserEntity;
+import si.rso.bicycle.schemas.UserCreated;
 import si.rso.bicycle.types.Password;
 import si.rso.bicycle.types.Username;
 
@@ -24,6 +25,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
@@ -36,11 +38,10 @@ import java.util.Random;
 @RequestScoped
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@Path("/")
+@Path("/users")
 public class UserResource {
     private static int DEFAULT_ITERATION_COUNT = 10000;
     private static int DEFAULT_KEY_LENGTH = 256;
-
 
     @PersistenceContext
     private EntityManager em;
@@ -87,14 +88,24 @@ public class UserResource {
         this.em.persist(u);
         this.em.refresh(u);
 
-        // Send an event to Kafka, notifying any receiver that a new request was created. Also publish a new command
-        // indicating that the account should be activated.
-        ProducerRecord<String, String> record = new ProducerRecord<>("users", u.getUid().toString(), null);
-        this.producer.send(record);
-        this.sendActivationCode(u);
+        UserCreated uc = UserCreated.newBuilder()
+                .setUid(u.getUid().toString())
+                .setUsername(u.getUsername())
+                .setCreatedAt(ISO8601Utils.format(u.getCreatedAt())).build();
 
-        // Issue a new bearer token and send it in the request. This token must be present in any subsequent request.
-        return Response.status(Response.Status.CREATED).build();
+        try {
+            // Send an event to Kafka, notifying any receiver that a new request was created. Also publish a new command
+            // indicating that the account should be activated.
+            ProducerRecord<String, String> record = new ProducerRecord<>("users", u.getUid().toString(), uc.toByteBuffer().toString());
+            this.producer.send(record);
+            this.sendActivationCode(u);
+
+            // Issue a new bearer token and send it in the request. This token must be present in any subsequent request.
+            return Response.status(Response.Status.CREATED).build();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @POST
@@ -151,7 +162,7 @@ class UserAlreadyActivated extends Exception {
 
 class CreateUserRequest {
     @NotEmpty
-    @Length(max = 255)
+    //@Length(max = 255)
     @Username String username;
 
     @NotEmpty
@@ -160,6 +171,6 @@ class CreateUserRequest {
 
 class ActivateUserRequest {
     @NotEmpty
-    @Length(min = 8, max = 8)
-    public String code;
+    //@Length(min = 8, max = 8)
+    String code;
 }

@@ -1,0 +1,16 @@
+{
+    "namespace": "si.rso.bicycle.schemas",
+    "type": "record",
+    "name": "UserCreated",
+    "fields": [
+        {"name": "uid", "type": "string"},
+        {"name": "username", "type": "string"},
+        {
+            "name": "created_at",
+            "type": {
+                "type": "string",
+                "logicalType": "timestamp-micros"
+            }
+        }
+    ]
+}

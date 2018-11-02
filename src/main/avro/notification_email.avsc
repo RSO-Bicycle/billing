@@ -1,0 +1,14 @@
+{
+    "namespace": "si.rso.bicycle.schemas",
+    "type": "record",
+    "name": "EmailNotification",
+    "fields": [
+        {
+            "name": "data",
+            "type": {
+                "type": "map",
+                "values": "string"
+            }
+        }
+    ]
+}

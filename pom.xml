@@ -62,36 +62,9 @@
             <artifactId>kumuluzee-jpa-hibernate</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-jax-ws-cxf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-websocket-jetty</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee</groupId>
-            <artifactId>kumuluzee-bean-validation-hibernate-validator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee.config</groupId>
-            <artifactId>kumuluzee-config-consul</artifactId>
-            <version>${kumuluzee-config.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee.discovery</groupId>
-            <artifactId>kumuluzee-discovery-consul</artifactId>
-            <version>${kumuluzee-discovery.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.kumuluz.ee.logs</groupId>
             <artifactId>kumuluzee-logs-log4j2</artifactId>
             <version>${kumuluzee-logs.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee.security</groupId>
-            <artifactId>kumuluzee-security-keycloak</artifactId>
-            <version>${kumuluzee-security.version}</version>
         </dependency>
         <dependency>
             <groupId>com.kumuluz.ee.streaming</groupId>
@@ -114,23 +87,8 @@
             <version>${kumuluzee-openapi.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.kumuluz.ee.grpc</groupId>
-            <artifactId>kumuluzee-grpc</artifactId>
-            <version>${kumuluzee-grpc.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee.graphql</groupId>
-            <artifactId>kumuluzee-graphql</artifactId>
-            <version>${kumuluzee-graphql.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.kumuluz.ee.metrics</groupId>
             <artifactId>kumuluzee-metrics-logs</artifactId>
-            <version>${kumuluzee-metrics.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.kumuluz.ee.metrics</groupId>
-            <artifactId>kumuluzee-metrics-logstash</artifactId>
             <version>${kumuluzee-metrics.version}</version>
         </dependency>
         <dependency>
@@ -174,10 +132,16 @@
             <artifactId>commons-codec</artifactId>
             <version>1.9</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>1.8.2</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>com.kumuluz.ee</groupId>
                 <artifactId>kumuluzee-maven-plugin</artifactId>
@@ -186,11 +150,37 @@
                     <execution>
                         <id>package</id>
                         <goals>
-                            <goal>copy-dependencies</goal>
+                            <goal>repackage</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.avro</groupId>
+                <artifactId>avro-maven-plugin</artifactId>
+                <version>1.8.2</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>schema</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>src/main/avro/</sourceDirectory>
+                            <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
