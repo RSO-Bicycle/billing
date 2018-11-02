@@ -3,10 +3,19 @@ package si.rso.bicycle.entity;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-public class UserEntity extends BaseEntity {
+public class UserEntity {
+    @Id
+    @Positive
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "uid")
+    private UUID uid;
+
     @NotEmpty
     @Column(name = "username")
     private String username;
@@ -85,5 +94,9 @@ public class UserEntity extends BaseEntity {
 
     public void setActivationCodeValidity(Date activationCodeValidity) {
         this.activationCodeValidity = activationCodeValidity;
+    }
+
+    public UUID getUid() {
+        return uid;
     }
 }

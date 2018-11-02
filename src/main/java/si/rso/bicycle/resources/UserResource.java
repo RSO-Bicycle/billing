@@ -172,5 +172,5 @@ class CreateUserRequest {
 class ActivateUserRequest {
     @NotEmpty
     //@Length(min = 8, max = 8)
-    String code;
+            String code;
 }
