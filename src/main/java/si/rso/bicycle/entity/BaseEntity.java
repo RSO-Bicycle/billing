@@ -1,7 +1,5 @@
 package si.rso.bicycle.entity;
 
-import org.hibernate.annotations.Type;
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +14,6 @@ public class BaseEntity {
     private int id;
 
     @Column(name = "uid")
-    @Type(type = "pg-uuid")
     private UUID uid;
 
     public UUID getUid() {
