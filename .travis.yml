@@ -2,5 +2,8 @@ sudo: false
 language: java
 services:
   - docker
-script:
-  - mvn clean package
+script: mvn clean package
+after_success:
+  docker login -u oauth2accesstoken -p "${GKE_TOKEN}" "https://${GKE_HOST}"
+  docker build -t "${GKE_HOST}/${GKE_PROJECT}/users:master" .
+  docker push "${GKE_HOST}/${GKE_PROJECT}/users:master"
