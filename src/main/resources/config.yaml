@@ -1,7 +1,18 @@
 kumuluzee:
   datasources:
-  - jndi-name: jdbc/BooksDS
+  - jndi-name: jdbc/users
     connection-url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: postgres
-max-pool-size: 20
+  streaming:
+    kafka:
+      producer:
+        bootstrap-servers: localhost:9092
+        acks: all
+        retries: 0
+        batch-size: 16384
+        linger-ms: 1
+        buffer-memory: 33554432
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  max-pool-size: 20

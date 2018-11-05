@@ -4,7 +4,7 @@ metadata:
   name: users
   namespace: bicycle
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: users
   ports:
@@ -39,7 +39,7 @@ spec:
         - name: KUMULUZEE_DATASOURCES0_JNDINAME
           value: "jdbc/users"
         - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
-          value: "jdbc:postgresql://db-postgresql:5432/bicycle_users"
+          value: "jdbc:postgresql://db-postgresql.bicycle:5432/bicycle_users"
         - name: KUMULUZEE_DATASOURCES0_USERNAME
           value: "postgres"
         - name: KUMULUZEE_DATASOURCES0_PASSWORD
@@ -47,3 +47,5 @@ spec:
             secretKeyRef:
               name: db-postgresql
               key: postgresql-password
+        - name: KUMULUZEE_STREAMING_KAFKA_PRODUCER_BOOTSTRAPSERVERS
+          value: "kafka.bicycle"
