@@ -1,7 +1,6 @@
 package si.rso.bicycle.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.UUID;
 
@@ -9,46 +8,56 @@ import java.util.UUID;
 @Table(name = "users")
 public class UserEntity {
     @Id
-    @Positive
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private int id;
 
     @Column(name = "uid")
-    private UUID uid;
+    private String uid;
 
-    @NotEmpty
     @Column(name = "username")
     private String username;
 
-    @NotEmpty
     @Column(name = "password")
     private String password;
 
     @Column(name = "activated")
     private boolean activated;
 
-    @NotEmpty
     @Column(name = "activation_code")
     private String activationCode;
 
-    @NotEmpty
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "activation_code_validity")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date activationCodeValidity;
 
     @Column(name = "deleted")
     private boolean deleted;
 
-    @NotEmpty
+    @Column(name = "created_at", insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
-    // @generated
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public UUID getUid() {
+        return UUID.fromString(this.uid);
+    }
+
+    public void setUid(UUID uid) {
+        this.uid = uid.toString();
+    }
+
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(@NotEmpty String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -56,12 +65,8 @@ public class UserEntity {
         return password;
     }
 
-    public void setPassword(@NotEmpty String password) {
+    public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
     }
 
     public boolean isActivated() {
@@ -80,14 +85,6 @@ public class UserEntity {
         this.activationCode = activationCode;
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public Date getActivationCodeValidity() {
         return activationCodeValidity;
     }
@@ -96,7 +93,19 @@ public class UserEntity {
         this.activationCodeValidity = activationCodeValidity;
     }
 
-    public UUID getUid() {
-        return uid;
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 }

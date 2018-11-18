@@ -1,7 +1,7 @@
 {
     "namespace": "si.rso.bicycle.schemas",
     "type": "record",
-    "name": "UserActivated",
+    "name": "Notification",
     "fields": [
         {"name": "uid", "type": "string"},
         {
@@ -9,14 +9,14 @@
             "type":  {
                 "type": "enum",
                 "name": "NotificationType",
-                "symbols": ["EMAIL", "SMS", "PUSH"]
+                "symbols": [
+                    "ACTIVATION_CODE"
+                ]
             }
         },
         {
             "name": "data",
-            "type": [
-
-             ]
+            "type": {"type": "map", "values": "string"}
         }
     ]
 }

@@ -14,7 +14,7 @@ import org.apache.avro.message.SchemaStore;
 @org.apache.avro.specific.AvroGenerated
 public class UserCreated extends org.apache.avro.specific.SpecificRecordBase implements org.apache.avro.specific.SpecificRecord {
   private static final long serialVersionUID = -6512690607487472628L;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"UserCreated\",\"namespace\":\"si.rso.bicycle.schemas\",\"fields\":[{\"name\":\"uid\",\"type\":\"string\"},{\"name\":\"username\",\"type\":\"string\"},{\"name\":\"created_at\",\"type\":{\"type\":\"string\",\"logicalType\":\"timestamp-micros\"}}]}");
+  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"UserCreated\",\"namespace\":\"si.rso.bicycle.schemas\",\"fields\":[{\"name\":\"uid\",\"type\":\"string\"},{\"name\":\"username\",\"type\":\"string\"},{\"name\":\"created_at\",\"type\":\"string\"}]}");
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static SpecificData MODEL$ = new SpecificData();

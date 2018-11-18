@@ -1,13 +1,13 @@
 kumuluzee:
   datasources:
   - jndi-name: jdbc/users
-    connection-url: jdbc:postgresql://localhost:5432/postgres
+    connection-url: jdbc:postgresql://192.168.39.116:32239/bicycle_users
     username: postgres
-    password: postgres
+    password: MVgcu5YL2w
   streaming:
     kafka:
       producer:
-        bootstrap-servers: localhost:9092
+        bootstrap-servers: 192.168.39.116:31090
         acks: all
         retries: 0
         batch-size: 16384
@@ -16,3 +16,6 @@ kumuluzee:
         key-serializer: org.apache.kafka.common.serialization.StringSerializer
         value-serializer: org.apache.kafka.common.serialization.StringSerializer
   max-pool-size: 20
+  jwt-auth:
+    public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnOTgnGBISzm3pKuG8QXMVm6eEuTZx8Wqc8D9gy7vArzyE5QC/bVJNFwlz...
+    issuer: http://example.org/auth

@@ -7,10 +7,7 @@
         {"name": "username", "type": "string"},
         {
             "name": "created_at",
-            "type": {
-                "type": "string",
-                "logicalType": "timestamp-micros"
-            }
+            "type": "string"
         }
     ]
 }

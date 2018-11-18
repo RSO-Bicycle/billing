@@ -33,13 +33,19 @@ spec:
         ports:
         - name: users
           containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 3
+          periodSeconds: 3
         env:
         - name: PORT
           value: "8080"
         - name: KUMULUZEE_DATASOURCES0_JNDINAME
           value: "jdbc/users"
         - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
-          value: "jdbc:postgresql://db-postgresql.bicycle:5432/bicycle_users"
+          value: "jdbc:postgresql://db-postgresql:5432/bicycle_users"
         - name: KUMULUZEE_DATASOURCES0_USERNAME
           value: "postgres"
         - name: KUMULUZEE_DATASOURCES0_PASSWORD
