@@ -30,6 +30,13 @@ kumuluzee:
         connection-url: jdbc:postgresql://localhost/bicycle_users
         username: postgres
         password:
+  metrics:
+    servlet:
+      enabled: true
+      mapping: /metrics
+    logs:
+      period-s: 60
+      level: INFO
   jwt-auth:
     public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnOTgnGBISzm3pKuG8QXMVm6eEuTZx8Wqc8D9gy7vArzyE5QC/bVJNFwlz...
     issuer: http://example.org/auth
