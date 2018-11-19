@@ -23,11 +23,12 @@
         <kumuluzee-security.version>1.0.1</kumuluzee-security.version>
         <kumuluzee-streaming.version>1.0.0</kumuluzee-streaming.version>
         <kumuluzee-jwt-auth.version>1.0.1</kumuluzee-jwt-auth.version>
+        <kumuluzee-rest.version>1.2.3</kumuluzee-rest.version>
+        <kumuluzee-health.version>1.0.1</kumuluzee-health.version>
         <log4j-slf4j.version>2.8.1</log4j-slf4j.version>
 
 
-        <kumuluzee-rest.version>1.2.3</kumuluzee-rest.version>
-        <kumuluzee-health.version>1.0.1</kumuluzee-health.version>
+
         <kumuluzee-cors.version>1.0.3</kumuluzee-cors.version>
         <kumuluzee-openapi.version>1.0.0</kumuluzee-openapi.version>
         <kumuluzee-grpc.version>1.0.0</kumuluzee-grpc.version>

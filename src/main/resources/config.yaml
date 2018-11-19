@@ -1,9 +1,9 @@
 kumuluzee:
   datasources:
   - jndi-name: jdbc/users
-    connection-url: jdbc:postgresql://192.168.39.116:32239/bicycle_users
+    connection-url: jdbc:postgresql://localhost/bicycle_users
     username: postgres
-    password: MVgcu5YL2w
+    password:
   streaming:
     kafka:
       producer:
@@ -16,6 +16,20 @@ kumuluzee:
         key-serializer: org.apache.kafka.common.serialization.StringSerializer
         value-serializer: org.apache.kafka.common.serialization.StringSerializer
   max-pool-size: 20
+  health:
+    servlet:
+      mapping: /healthz
+      enabled: true
+    logs:
+      enabled: true
+      level: FINE
+      period-s: 60
+    checks:
+      data-source-health-check:
+        jndi-name: jdbc/users
+        connection-url: jdbc:postgresql://localhost/bicycle_users
+        username: postgres
+        password:
   jwt-auth:
     public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnOTgnGBISzm3pKuG8QXMVm6eEuTZx8Wqc8D9gy7vArzyE5QC/bVJNFwlz...
     issuer: http://example.org/auth
