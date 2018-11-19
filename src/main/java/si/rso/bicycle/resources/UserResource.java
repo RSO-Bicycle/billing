@@ -121,7 +121,7 @@ public class UserResource {
                     log.info("publishing new user record successful");
                 }
             });
-            // this.sendActivationCode(u);
+            this.sendActivationCode(u);
 
             return Response.status(Response.Status.CREATED).build();
         } catch (ConstraintViolationException e) {
