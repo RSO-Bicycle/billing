@@ -4,13 +4,32 @@ metadata:
   name: users
   namespace: bicycle
 spec:
-  type: NodePort
   selector:
     app: users
   ports:
   - port: 80
     name: users
     targetPort: users
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: users
+  namespace: bicycle
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - api-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /users
+    route:
+    - destination:
+        port:
+          number: 80
+        host: users.bicycle.svc.cluster.local
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -37,7 +56,7 @@ spec:
           httpGet:
             path: /healthz
             port: 8080
-          initialDelaySeconds: 3
+          initialDelaySeconds: 20
           periodSeconds: 3
         env:
         - name: PORT
@@ -45,7 +64,7 @@ spec:
         - name: KUMULUZEE_DATASOURCES0_JNDINAME
           value: "jdbc/users"
         - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
-          value: "jdbc:postgresql://db-postgresql.bicycle:5432/bicycle_users"
+          value: "jdbc:postgresql://db-postgresql.system:5432/bicycle_users"
         - name: KUMULUZEE_DATASOURCES0_USERNAME
           value: "postgres"
         - name: KUMULUZEE_DATASOURCES0_PASSWORD

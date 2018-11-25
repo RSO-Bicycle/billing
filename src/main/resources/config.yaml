@@ -1,7 +1,7 @@
 kumuluzee:
   datasources:
   - jndi-name: jdbc/users
-    connection-url: jdbc:postgresql://localhost/bicycle_users
+    connection-url: jdbc:postgresql://127.0.0.1:5432/bicycle_users
     username: postgres
     password:
   streaming:
@@ -27,7 +27,7 @@ kumuluzee:
     checks:
       data-source-health-check:
         jndi-name: jdbc/users
-        connection-url: jdbc:postgresql://localhost/bicycle_users
+        connection-url: jdbc:postgresql://127.0.0.1:5432/bicycle_users
         username: postgres
         password:
   metrics:
