@@ -1,20 +1,20 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: users
+  name: billing
   namespace: bicycle
 spec:
   selector:
-    app: users
+    app: billing
   ports:
   - port: 80
-    name: users
-    targetPort: users
+    name: billing
+    targetPort: billing
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: users
+  name: billing
   namespace: bicycle
 spec:
   hosts:
@@ -24,33 +24,34 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /users
+        prefix: /billing
     route:
     - destination:
         port:
           number: 80
-        host: users.bicycle.svc.cluster.local
+        host: billing.bicycle.svc.cluster.local
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: users
+  name: billing
   namespace: bicycle
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: users
+        app: billing
+        ext: auth
     spec:
       imagePullSecrets:
       - name: docker-registry
       containers:
-      - name: users
-        image: eu.gcr.io/rso-bicycle/users:master
+      - name: billing
+        image: eu.gcr.io/rso-bicycle/billing:master
         imagePullPolicy: Always
         ports:
-        - name: users
+        - name: billing
           containerPort: 8080
         livenessProbe:
           httpGet:
@@ -62,9 +63,9 @@ spec:
         - name: PORT
           value: "8080"
         - name: KUMULUZEE_DATASOURCES0_JNDINAME
-          value: "jdbc/users"
+          value: "jdbc/billing"
         - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
-          value: "jdbc:postgresql://db-postgresql.system:5432/bicycle_users"
+          value: "jdbc:postgresql://db-postgresql.system:5432/bicycle_billing"
         - name: KUMULUZEE_DATASOURCES0_USERNAME
           value: "postgres"
         - name: KUMULUZEE_DATASOURCES0_PASSWORD

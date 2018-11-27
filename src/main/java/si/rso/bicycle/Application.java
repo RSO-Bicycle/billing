@@ -2,7 +2,7 @@ package si.rso.bicycle;
 
 import com.kumuluz.ee.jwt.auth.feature.JWTRolesAllowedDynamicFeature;
 import com.kumuluz.ee.jwt.auth.filter.JWTAuthorizationFilter;
-import si.rso.bicycle.resources.UserResource;
+import si.rso.bicycle.resources.ProfileResource;
 
 import javax.ws.rs.ApplicationPath;
 import java.util.HashSet;
@@ -23,7 +23,7 @@ public class Application extends javax.ws.rs.core.Application {
         classes.add(JWTRolesAllowedDynamicFeature.class);
 
         // resources
-        classes.add(UserResource.class);
+        classes.add(ProfileResource.class);
 
         return classes;
     }
