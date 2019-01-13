@@ -36,6 +36,13 @@ public class BillingResource {
     private Producer producer;
 
 
+    @GET
+    @Path("billing/test")
+    public Response testBilling(@Valid AllValid request){
+        return Response.status(77).build();
+    }
+
+
     @POST
     @Path("/billing/start")
     public Response startBilling(@Valid StartBilling request) {
@@ -151,4 +158,6 @@ class GetBill {
     @NotNull(message = "borrow_id cannot be omitted")
     public Integer borrow_id;
 
+}
+class AllValid {
 }
