@@ -1,20 +1,9 @@
 kumuluzee:
   datasources:
   - jndi-name: jdbc/billing
-    connection-url: jdbc:postgresql://127.0.0.1:5432/bicycle_billing
-    username: postgres
-    password: FsOVOtFnlh
-  streaming:
-    kafka:
-      producer:
-        bootstrap-servers: 192.168.39.116:31090
-        acks: all
-        retries: 0
-        batch-size: 16384
-        linger-ms: 1
-        buffer-memory: 33554432
-        key-serializer: org.apache.kafka.common.serialization.StringSerializer
-        value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    connection-url: mysql://admin:PCIRAJXAPHBBGGBM@sl-eu-gb-p00.dblayer.com:16998/compose
+    username: admin
+    password: PCIRAJXAPHBBGGBM
   max-pool-size: 20
   health:
     servlet:
@@ -26,10 +15,10 @@ kumuluzee:
       period-s: 60
     checks:
       data-source-health-check:
-        jndi-name: jdbc/billing
-        connection-url: jdbc:postgresql://127.0.0.1:5432/bicycle_billing
+        jndi-name: jdbc/users
+        connection-url: jdbc:postgresql://127.0.0.1:5432/bicycle_users
         username: postgres
-        password: FsOVOtFnlh
+        password:
   metrics:
     servlet:
       enabled: true
