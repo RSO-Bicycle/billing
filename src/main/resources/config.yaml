@@ -1,7 +1,7 @@
 kumuluzee:
   datasources:
   - jndi-name: jdbc/billing
-    connection-url: mysql://admin:PCIRAJXAPHBBGGBM@sl-eu-gb-p00.dblayer.com:16998/compose
+    connection-url: jdbc:mysql://sl-eu-gb-p00.dblayer.com:16998/compose
     username: admin
     password: PCIRAJXAPHBBGGBM
   max-pool-size: 20
@@ -15,10 +15,10 @@ kumuluzee:
       period-s: 60
     checks:
       data-source-health-check:
-        jndi-name: jdbc/users
-        connection-url: jdbc:postgresql://127.0.0.1:5432/bicycle_users
-        username: postgres
-        password:
+        jndi-name: jdbc/billing
+        connection-url: jdbc:mysql://sl-eu-gb-p00.dblayer.com:16998/compose
+        username: admin
+        password: PCIRAJXAPHBBGGBM
   metrics:
     servlet:
       enabled: true

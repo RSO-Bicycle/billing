@@ -2,23 +2,17 @@ package si.rso.bicycle.resources;
 
 import com.kumuluz.ee.streaming.common.annotations.StreamProducer;
 import org.apache.kafka.clients.producer.Producer;
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
-import org.hibernate.validator.constraints.Length;
 import si.rso.bicycle.entity.BillingEntity;
-import si.rso.bicycle.entity.ProfileEntity;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.*;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Date;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 
@@ -78,6 +72,8 @@ public class BillingResource {
     public Response stopBilling(@Valid StopBilling request) {
         //create new billing entry
         try{
+            //TypedQuery<ProfileEntity> pe = this.em.createQuery("SELECT p FROM ProfileEntity p WHERE p.user_uuid = :user ORDER BY p.created_at DESC LIMIT 1", ProfileEntity.class);
+            //TypedQuery<BillingEntity> be = this.em.createQuery("SELECT b FROM BillingEntity b WHERE b.user_id = :user LIMIT 1", BillingEntity.class);
             // TODO: Get end_time & end_station_id from request
             // TODO: Calculate total, with_vat & write everything to DB
 
@@ -115,7 +111,7 @@ class StartBilling {
     public Integer borrow_id;
 
     @NotNull(message = "start_time cannot be omitted")
-    public DateTime start_time;
+    public Date start_time;
 
     @NotNull(message = "start_station_id cannot be omitted")
     public Integer start_station_id;
@@ -134,8 +130,8 @@ class StopBilling {
     @NotNull(message = "user_id cannot be omitted")
     public Integer user_id;
 
-    @NotNull(message = "start_time cannot be omitted")
-    public DateTime start_time;
+    @NotNull(message = "stop_time cannot be omitted")
+    public Date  stop_time;
 
     @NotNull(message = "start_station_id cannot be omitted")
     public Integer start_station_id;

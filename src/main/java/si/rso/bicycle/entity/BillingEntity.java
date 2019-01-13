@@ -1,7 +1,5 @@
 package si.rso.bicycle.entity;
 
-import org.eclipse.persistence.jpa.jpql.parser.DateTime;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -22,12 +20,13 @@ public class BillingEntity {
 
     @Column(name = "start_time")
     @Temporal(TemporalType.TIMESTAMP)
-    private @NotNull(message = "start_time cannot be omitted") DateTime start_time;
+    private @NotNull(message = "start_time cannot be omitted") Date start_time;
 
     @Column(name = "start_station_id")
     private Integer start_station_id;
 
     @Column(name = "end_time")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date start_time_id;
 
     @Column(name = "end_station_id")
@@ -76,11 +75,11 @@ public class BillingEntity {
         this.borrow_id = borrow_id;
     }
 
-    public @NotNull(message = "start_time cannot be omitted") DateTime getStart_time() {
+    public @NotNull(message = "start_time cannot be omitted") Date getStart_time() {
         return start_time;
     }
 
-    public void setStart_time(@NotNull(message = "start_time cannot be omitted") DateTime start_time) {
+    public void setStart_time(@NotNull(message = "start_time cannot be omitted") Date start_time) {
         this.start_time = start_time;
     }
 

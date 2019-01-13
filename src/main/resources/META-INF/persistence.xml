@@ -8,8 +8,7 @@
     <persistence-unit name="billing" transaction-type="RESOURCE_LOCAL">
         <non-jta-data-source>jdbc/billing</non-jta-data-source>
 
-        <class>si.rso.bicycle.entity.ProfileEntity</class>
-        <class>si.rso.bicycle.entity.RentalEntity</class>
+        <class>si.rso.bicycle.entity.BillingEntity</class>
 
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="create"/>
