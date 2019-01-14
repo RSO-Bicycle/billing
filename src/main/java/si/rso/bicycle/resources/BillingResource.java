@@ -22,8 +22,8 @@ import java.util.logging.Logger;
  */
 
 @RequestScoped
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
+//@Consumes(MediaType.APPLICATION_JSON)
+//@Produces(MediaType.APPLICATION_JSON)
 @Path("/billing")
 public class BillingResource {
     private static final Logger log = Logger.getLogger(BillingResource.class.getName());
@@ -37,6 +37,12 @@ public class BillingResource {
 
 
     @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String sayPlainTextHello() {
+        return "Hello Jersey";
+    }
+
+    @GET
     @Path("/test")
     public Response testBilling(){
         return Response.status(77).build();
@@ -47,27 +53,33 @@ public class BillingResource {
     @Path("/start")
     public Response startBilling(@Valid StartBilling request) {
         //create new billing entry
-        try{
 
+        //Additional data.
+        String currency = "EUR";
+        double VAT = 0.2;
+        double rate = 0.5;
+
+        try{
             this.em.getTransaction().begin();
 
             BillingEntity be = new BillingEntity();
             be.setUser_id(request.user_id);
             be.setBorrow_id(request.borrow_id);
-            be.setStart_time(request.start_time);
             be.setStart_station_id(request.start_station_id);
-            be.setRate(request.rate);
-            be.setVat(request.vat);
-            be.setCurrency(request.currency);
+            be.setStart_time(new Date());
+            be.setRate(rate);
+            be.setVat(VAT);
+            be.setCurrency(currency);
 
             this.em.persist(be);
             this.em.getTransaction().commit();
             this.em.refresh(be);
-            return Response.status(Response.Status.CREATED).build();
 
+            return Response.status(Response.Status.CREATED).build();
 
         }catch (Exception e){
             e.printStackTrace();
+            //return "Error catched"+e;
         }
         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
     }
@@ -115,20 +127,9 @@ class StartBilling {
     @NotNull(message = "borrow_id cannot be omitted")
     public Integer borrow_id;
 
-    @NotNull(message = "start_time cannot be omitted")
-    public Date start_time;
-
     @NotNull(message = "start_station_id cannot be omitted")
     public Integer start_station_id;
 
-    @NotNull(message = "rate cannot be omitted")
-    public Double rate;
-
-    @NotNull(message = "VAT cannot be omitted")
-    public Double vat;
-
-    @NotNull(message = "currency cannot be omitted")
-    public String currency;
 }
 
 class StopBilling {

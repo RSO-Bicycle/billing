@@ -20,7 +20,7 @@ public class BillingEntity {
 
     @Column(name = "start_time")
     @Temporal(TemporalType.TIMESTAMP)
-    private @NotNull(message = "start_time cannot be omitted") Date start_time;
+    private Date start_time;
 
     @Column(name = "start_station_id")
     private Integer start_station_id;
@@ -50,21 +50,12 @@ public class BillingEntity {
     private Date createdAt;
     */
 
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Integer getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(@NotNull(message = "user_id cannot be omitted") Integer user_id) {
-        this.user_id = user_id;
     }
 
     public Integer getBorrow_id() {
@@ -75,11 +66,19 @@ public class BillingEntity {
         this.borrow_id = borrow_id;
     }
 
-    public @NotNull(message = "start_time cannot be omitted") Date getStart_time() {
+    public Integer getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Integer user_id) {
+        this.user_id = user_id;
+    }
+
+    public Date getStart_time() {
         return start_time;
     }
 
-    public void setStart_time(@NotNull(message = "start_time cannot be omitted") Date start_time) {
+    public void setStart_time(Date start_time) {
         this.start_time = start_time;
     }
 
