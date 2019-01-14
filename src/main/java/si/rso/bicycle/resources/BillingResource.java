@@ -37,20 +37,19 @@ public class BillingResource {
 
 
     @GET
-    @Path("billing/test")
-    public Response testBilling(@Valid AllValid request){
+    @Path("/test")
+    public Response testBilling(){
         return Response.status(77).build();
     }
 
 
     @POST
-    @Path("/billing/start")
+    @Path("/start")
     public Response startBilling(@Valid StartBilling request) {
         //create new billing entry
         try{
 
             this.em.getTransaction().begin();
-
 
             BillingEntity be = new BillingEntity();
             be.setUser_id(request.user_id);
@@ -60,7 +59,6 @@ public class BillingResource {
             be.setRate(request.rate);
             be.setVat(request.vat);
             be.setCurrency(request.currency);
-
 
             this.em.persist(be);
             this.em.getTransaction().commit();
@@ -75,7 +73,7 @@ public class BillingResource {
     }
 
     @POST
-    @Path("/billing/stop")
+    @Path("/stop")
     public Response stopBilling(@Valid StopBilling request) {
         //create new billing entry
         try{
@@ -93,7 +91,7 @@ public class BillingResource {
 
 
     @POST
-    @Path("/billing/getBill")
+    @Path("/getBill")
     public Response getBill(@Valid GetBill request) {
         try{
             //TODO: check if entry with borrow_id has end_time, end_station_id
