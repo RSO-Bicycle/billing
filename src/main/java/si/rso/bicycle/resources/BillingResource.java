@@ -5,6 +5,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import org.apache.kafka.clients.producer.Producer;
+import org.json.JSONObject;
 import si.rso.bicycle.entity.BillingEntity;
 
 import javax.enterprise.context.RequestScoped;
@@ -123,13 +124,31 @@ public class BillingResource {
     @Path("/getBill")
     public String getBill(@Valid GetBill request) {
         try{
+            TypedQuery<BillingEntity> tq = this.em.createQuery("SELECT b FROM BillingEntity b WHERE b.borrow_id = :borrow_id", BillingEntity.class);
+            tq.setParameter("borrow_id", request.borrow_id);
 
+            BillingEntity be = tq.getSingleResult();
 
             //Get random quote from third party API
             HttpResponse<JsonNode> response = Unirest.get("https://qvoca-bestquotes-v1.p.rapidapi.com/quote")
                     .header("X-RapidAPI-Key", "ab928df105msh337d6fda6886cb8p18d25djsn0355c6416136")
                     .asJson();
-            return (String)response.getBody().getObject().get("message");
+
+
+
+
+            String jsonString = new JSONObject()
+                    .put("start_station", be.getStart_station_id())
+                    .put("end_station", be.getEnd_station_id())
+                    .put("start_time", be.getStart_time())
+                    .put("end_time", be.getEnd_time())
+                    .put("borrow_id", be.getBorrow_id())
+                    .put("with_vat", be.getWith_vat())
+                    .put("quote_message", (String)response.getBody().getObject().get("message"))
+                    .put("quote_author", (String)response.getBody().getObject().get("author"))
+                    .toString();
+
+            return jsonString;
         }catch (Exception e){
             e.printStackTrace();
         }
