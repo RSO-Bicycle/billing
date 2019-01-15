@@ -1,6 +1,9 @@
 package si.rso.bicycle.resources;
 
 import com.kumuluz.ee.streaming.common.annotations.StreamProducer;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
 import org.apache.kafka.clients.producer.Producer;
 import si.rso.bicycle.entity.BillingEntity;
 
@@ -12,7 +15,6 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.time.Period;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -88,18 +90,14 @@ public class BillingResource {
     @POST
     @Path("/stop")
     public String stopBilling(@Valid StopBilling request) {
-        //create new billing entry
         try{
-            // TODO: Calculate total, with_vat & write everything to DB
             TypedQuery<BillingEntity> tq = this.em.createQuery("SELECT b FROM BillingEntity b WHERE b.borrow_id = :borrow_id", BillingEntity.class);
             tq.setParameter("borrow_id", request.borrow_id);
 
             BillingEntity be = tq.getSingleResult();
 
-
             long diff = new Date().getTime() - be.getStart_time().getTime();
             double diffHours = diff / (60 * 60 * 1000) % 24;
-
 
             this.em.getTransaction().begin();
 
@@ -107,14 +105,12 @@ public class BillingResource {
             be.setEnd_station_id(request.stop_station_id);
             be.setTotal(diffHours*be.getRate());
             be.setWith_vat((1+be.getVat()) *diffHours*be.getRate());
-            //return "test1";
 
             this.em.persist(be);
             this.em.getTransaction().commit();
             this.em.refresh(be);
 
-            return "Success!";
-
+            return "Success";
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -125,18 +121,21 @@ public class BillingResource {
 
     @POST
     @Path("/getBill")
-    public Response getBill(@Valid GetBill request) {
+    public String getBill(@Valid GetBill request) {
         try{
-            //TODO: check if entry with borrow_id has end_time, end_station_id
-            //TODO: Get the data an return JSON response
 
+
+            //Get random quote from third party API
+            HttpResponse<JsonNode> response = Unirest.get("https://qvoca-bestquotes-v1.p.rapidapi.com/quote")
+                    .header("X-RapidAPI-Key", "ab928df105msh337d6fda6886cb8p18d25djsn0355c6416136")
+                    .asJson();
+            return (String)response.getBody().getObject().get("message");
         }catch (Exception e){
             e.printStackTrace();
         }
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        //return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        return "Failed";
     }
-
-
 
 }
 
