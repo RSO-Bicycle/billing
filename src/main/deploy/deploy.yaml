@@ -24,7 +24,9 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /billing
+        prefix: /billing/
+    rewrite:
+      uri: /
     route:
     - destination:
         port:
@@ -56,7 +58,7 @@ spec:
           httpGet:
             path: /healthz
             port: 8080
-          initialDelaySeconds: 20
+          initialDelaySeconds: 60
           periodSeconds: 3
         env:
         - name: PORT
