@@ -20,7 +20,7 @@ spec:
   hosts:
   - "*"
   gateways:
-  - api-gateway
+  - api-ingress
   http:
   - match:
     - uri:
@@ -42,7 +42,6 @@ spec:
     metadata:
       labels:
         app: billing
-        ext: auth
     spec:
       imagePullSecrets:
       - name: docker-registry
@@ -65,13 +64,14 @@ spec:
         - name: KUMULUZEE_DATASOURCES0_JNDINAME
           value: "jdbc/billing"
         - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
-          value: "jdbc:postgresql://db-postgresql.system:5432/bicycle_billing"
+          valueFrom:
+            secretKeyRef:
+              name: ibm-billing-db
+              key: conn
         - name: KUMULUZEE_DATASOURCES0_USERNAME
-          value: "postgres"
+          value: "admin"
         - name: KUMULUZEE_DATASOURCES0_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: db-postgresql
-              key: postgresql-password
-        - name: KUMULUZEE_STREAMING_KAFKA_PRODUCER_BOOTSTRAPSERVERS
-          value: "kafka.bicycle:9092"
+              name: ibm-billing-db
+              key: password
