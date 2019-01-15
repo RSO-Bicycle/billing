@@ -27,7 +27,7 @@ public class BillingEntity {
 
     @Column(name = "end_time")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date start_time_id;
+    private Date end_time;
 
     @Column(name = "end_station_id")
     private Integer end_station_id;
@@ -40,6 +40,9 @@ public class BillingEntity {
 
     @Column(name = "currency")
     private String currency;
+
+    @Column(name = "total")
+    private Double total;
 
     @Column(name = "with_vat")
     private Double with_vat;
@@ -90,12 +93,12 @@ public class BillingEntity {
         this.start_station_id = start_station_id;
     }
 
-    public Date getStart_time_id() {
-        return start_time_id;
+    public Date getEnd_time() {
+        return end_time;
     }
 
-    public void setStart_time_id(Date start_time_id) {
-        this.start_time_id = start_time_id;
+    public void setEnd_time(Date end_time) {
+        this.end_time = end_time;
     }
 
     public Integer getEnd_station_id() {
@@ -136,5 +139,13 @@ public class BillingEntity {
 
     public void setWith_vat(Double with_vat) {
         this.with_vat = with_vat;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
     }
 }

@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.Period;
 import java.util.Date;
 import java.util.logging.Logger;
 
@@ -86,19 +87,39 @@ public class BillingResource {
 
     @POST
     @Path("/stop")
-    public Response stopBilling(@Valid StopBilling request) {
+    public String stopBilling(@Valid StopBilling request) {
         //create new billing entry
         try{
-            //TypedQuery<ProfileEntity> pe = this.em.createQuery("SELECT p FROM ProfileEntity p WHERE p.user_uuid = :user ORDER BY p.created_at DESC LIMIT 1", ProfileEntity.class);
-            //TypedQuery<BillingEntity> be = this.em.createQuery("SELECT b FROM BillingEntity b WHERE b.user_id = :user LIMIT 1", BillingEntity.class);
-            // TODO: Get end_time & end_station_id from request
             // TODO: Calculate total, with_vat & write everything to DB
+            TypedQuery<BillingEntity> tq = this.em.createQuery("SELECT b FROM BillingEntity b WHERE b.borrow_id = :borrow_id", BillingEntity.class);
+            tq.setParameter("borrow_id", request.borrow_id);
 
+            BillingEntity be = tq.getSingleResult();
+
+
+            long diff = new Date().getTime() - be.getStart_time().getTime();
+            double diffHours = diff / (60 * 60 * 1000) % 24;
+
+
+            this.em.getTransaction().begin();
+
+            be.setEnd_time(new Date());
+            be.setEnd_station_id(request.stop_station_id);
+            be.setTotal(diffHours*be.getRate());
+            be.setWith_vat((1+be.getVat()) *diffHours*be.getRate());
+            //return "test1";
+
+            this.em.persist(be);
+            this.em.getTransaction().commit();
+            this.em.refresh(be);
+
+            return "Success!";
 
         }catch (Exception e){
             e.printStackTrace();
         }
-        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        //return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        return "Error";
     }
 
 
@@ -133,23 +154,12 @@ class StartBilling {
 }
 
 class StopBilling {
-    @NotNull(message = "user_id cannot be omitted")
-    public Integer user_id;
+    @NotNull(message = "borrow_id cannot be omitted")
+    public Integer borrow_id;
 
-    @NotNull(message = "stop_time cannot be omitted")
-    public Date  stop_time;
+    @NotNull(message = "stop_station_id cannot be omitted")
+    public Integer stop_station_id;
 
-    @NotNull(message = "start_station_id cannot be omitted")
-    public Integer start_station_id;
-
-    @NotNull(message = "rate cannot be omitted")
-    public Double rate;
-
-    @NotNull(message = "VAT cannot be omitted")
-    public Double vat;
-
-    @NotNull(message = "currency cannot be omitted")
-    public String currency;
 }
 
 class GetBill {
